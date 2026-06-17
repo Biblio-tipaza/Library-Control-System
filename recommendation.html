@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المكتبة المركزية - رسالة توصية</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #1e3d59;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* واجهة إدخال البيانات - تظهر في المتصفح وتختفي عند الطباعة */
+        .form-container {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 750px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-top: 5px solid #27ae60;
+        }
+        .form-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e3d59;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f0f2f5;
+            padding-bottom: 10px;
+        }
+        .grid-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        label { font-size: 14px; font-weight: 700; color: #475569; }
+        input, select {
+            font-family: 'Cairo', sans-serif;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+        }
+        input:focus, select:focus { border-color: #27ae60; }
+
+        .btn-block {
+            grid-column: span 2;
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .btn {
+            font-family: 'Cairo', sans-serif;
+            padding: 12px 25px;
+            font-size: 15px;
+            font-weight: 700;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            flex: 1;
+        }
+        .btn-print { background-color: #27ae60; color: white; }
+        .btn-back { background-color: #7f8c8d; color: white; }
+
+        /* ======================================================== */
+        /* وثيقة رسالة التوصية الرسمية - نسخة طبق الأصل للطباعة */
+        /* ======================================================== */
+        #receipt-container {
+            background-color: #ffffff !important;
+            width: 210mm;
+            min-height: 285mm;
+            padding: 15mm 20mm;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            page-break-inside: avoid;
+        }
+
+        /* تنسيق الهيدر المطور مطابق للصورة الثانية */
+        .receipt-header {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 25px;
+            color: #000000;
+        }
+        .header-top-center {
+            text-align: center;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        .header-bottom-row {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-top: 5px;
+        }
+        .side-block {
+            flex: 1;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+        .side-right {
+            text-align: right;
+            font-weight: 700;
+        }
+        .side-left {
+            text-align: left;
+            font-weight: 700;
+        }
+        .center-logo {
+            flex: 0 0 110px;
+            text-align: center;
+            margin-top: -10px;
+        }
+        .center-logo img {
+            max-width: 150%;
+            height: auto;
+        }
+        .date-row {
+            margin-top: 8px;
+        }
+
+        .receipt-title {
+            text-align: center;
+            font-size: 26px;
+            font-weight: 900;
+            margin-top: 15px;
+            color: #000000;
+        }
+        .title-divider {
+            width: 30%;
+            height: 2px;
+            background-color: #000000;
+            margin: 8px auto 35px auto;
+        }
+        
+        .receipt-body {
+            font-size: 18px;
+            line-height: 2.4;
+            flex-grow: 1;
+            color: #000000;
+        }
+        .receipt-body p {
+            margin-bottom: 25px;
+            text-align: justify;
+            text-indent: 40px;
+        }
+        
+        .data-value {
+            font-weight: 700;
+            padding: 0 4px;
+            display: inline;
+        }
+
+        .receipt-footer {
+            margin-top: 30px;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .signature-block {
+            text-align: center;
+            width: 250px;
+            font-size: 18px;
+            line-height: 1.8;
+            color: #000000;
+        }
+        .signature-space {
+            height: 80px;
+        }
+
+        @media print {
+            @page {
+                size: A4;
+                margin: 0;
+            }
+            html, body {
+                background-color: #ffffff !important;
+                height: 100% !important;
+                overflow: hidden !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            body * { visibility: hidden !important; }
+            #receipt-container, #receipt-container * { visibility: visible !important; }
+            #receipt-container {
+                position: absolute !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 210mm !important;
+                height: 297mm !important;
+                box-shadow: none !important;
+                border: none !important;
+                padding: 15mm 20mm !important;
+                margin: 0 !important;
+            }
+            .no-print { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container no-print">
+        <div class="form-title">📋 ملء معلومات رسالة التوصية (التسجيل في الدكتوراه)</div>
+        <div class="grid-inputs">
+            <div class="form-group">
+                <label>اسم ولقب الطالب:</label>
+                <input type="text" id="input-student-name" placeholder="أدخل اسم ولقب الطالب" oninput="updateDoc()">
+            </div>
+            <div class="form-group">
+                <label>رقم التسجيل:</label>
+                <input type="text" id="input-reg-num" placeholder="أدخل رقم التسجيل" oninput="updateDoc()">
+            </div>
+            <div class="form-group">
+                <label>الكلية:</label>
+                <select id="input-faculty" onchange="updateDoc()">
+                    <option value="">-- اختر الكلية --</option>
+                    <option value="الحقوق والعلوم السياسية">الحقوق والعلوم السياسية</option>
+                    <option value="العلوم الاقتصادية والتجارية وع التسيير">العلوم الاقتصادية والتجارية وع التسيير</option>
+                    <option value="العلوم والتكنولوجيا">العلوم والتكنولوجيا</option>
+                    <option value="العلوم الانسانية والاجتماعية">العلوم الانسانية والاجتماعية</option>
+                    <option value="العلوم الطبيعية والحياة">العلوم الطبيعية والحياة</option>
+                    <option value="اللغة والاداب العربي">اللغة والاداب العربي</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>القسم:</label>
+                <input type="text" id="input-department" placeholder="أدخل اسم القسم (مثال: قسم الحقوق)" oninput="updateDoc()">
+            </div>
+            <div class="form-group">
+                <label>التخصص (الماستر):</label>
+                <input type="text" id="input-specialty" placeholder="أدخل تخصص الماستر" oninput="updateDoc()">
+            </div>
+            <div class="form-group">
+                <label>الشهادة:</label>
+                <select id="input-degree" onchange="updateDoc()">
+                    <option value="">-- اختر الشهادة --</option>
+                    <option value="ليسانس">ليسانس</option>
+                    <option value="ماستر">ماستر</option>
+                    <option value="دكتوراه">دكتوراه</option>
+                </select>
+            </div>
+            
+            <div class="btn-block">
+                <button onclick="window.print()" class="btn btn-print">🖨️ معاينة وطباعة رسالة التوصية</button>
+                <a href="index.html" class="btn btn-back">↩️ العودة للبوابة الرئيسية</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="receipt-container">
+        <div class="receipt-header">
+            <div class="header-top-center">
+                <p>الجمهورية الجزائرية الديمقراطية الشعبية</p>
+                <p dir="ltr" style="font-family: Arial, sans-serif; font-size: 14px;">République Algérienne Démocratique et Populaire</p>
+                <p>وزارة التعليم العالي والبحث العلمي</p>
+                <p dir="ltr" style="font-family: Arial, sans-serif; font-size: 14px;">Ministère de l'Enseignement Supérieur et de la Recherche Scientifique</p>
+            </div>
+            
+            <div class="header-bottom-row">
+                <div class="side-block side-right">
+                    <p>جامعة تيبازة - مرسلي عبد الله</p>
+                    <p>المكتبة المركزية</p>
+                    <p class="date-row">تيبازة في: <strong id="current-date"></strong></p>
+                </div>
+                
+                <div class="center-logo">
+                    <img src="logo.jpg" alt="شعار الجامعة" onerror="this.style.display='none'">
+                </div>
+                
+                <div class="side-block side-left" dir="ltr" style="font-family: Arial, sans-serif; font-size: 14px;">
+                    <p>Universitaire de Tipaza</p>
+                    <p>La bibliothèque centrale</p>
+                </div>
+            </div>
+        </div>
+
+        <h1 class="receipt-title">توصية</h1>
+        <div class="title-divider"></div>
+
+        <div class="receipt-body">
+            <p>
+                نحن السيد مدير المكتبة المركزي بجامعة مرسلي عبدالله بتيبازة نرجو من سيادتكم المحترمة بالموافقة على استفادة الطالب(ة): 
+                <span id="doc-student-name" class="data-value">....................................................................................</span> 
+                المسجل(ة) برقم: <span id="doc-reg-num" class="data-value">........................................</span> 
+                بكلية: <span id="doc-faculty" class="data-value">....................................................................................</span> 
+                قسم: <span id="doc-department" class="data-value">......................................................</span> 
+                تخصص: <span id="doc-specialty" class="data-value">..........................................................................</span> 
+                من المراجع المتوفرة في مكتبة مؤسستكم و هذا في اطار اتمام مذكرة التخرج لنيل شهادة 
+                <span id="doc-degree" class="data-value">........................</span>.
+            </p>
+
+            <p>
+                ونرجو منكم التكرم بتسهيل في الحصول على المراجع التي تخص موضوع البحث.
+            </p>
+            
+            <p>لكم منا اسمى عبارات التقدير و الاحترام ونشكركم مسبقا على حسن التعاون  .</p>
+        </div>
+
+        <div class="receipt-footer">
+            <div class="signature-block">
+                <p><strong>مدير المكتبة المركزية</strong></p>
+                <div class="signature-space"></div>
+             </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. تثبيت تحديث التاريخ تلقائياً بـ صيغة المطبوعات الرسمية الجزائرية
+        const today = new Date();
+        document.getElementById('current-date').innerText = today.toLocaleDateString('ar-DZ');
+
+        // 2. ربط المدخلات بالوثيقة
+        function updateDoc() {
+            const studentName = document.getElementById('input-student-name').value;
+            const regNum = document.getElementById('input-reg-num').value;
+            const faculty = document.getElementById('input-faculty').value;
+            const department = document.getElementById('input-department').value;
+            const specialty = document.getElementById('input-specialty').value;
+            const degree = document.getElementById('input-degree').value;
+
+            document.getElementById('doc-student-name').innerText = studentName ? studentName : "....................................................................................";
+            document.getElementById('doc-reg-num').innerText = regNum ? regNum : "........................................";
+            document.getElementById('doc-faculty').innerText = faculty ? faculty : "....................................................................................";
+            document.getElementById('doc-department').innerText = department ? department : "......................................................";
+            document.getElementById('doc-specialty').innerText = specialty ? specialty : "..........................................................................";
+            document.getElementById('doc-degree').innerText = degree ? degree : "........................";
+        }
+    </script>
+</body>
+</html>

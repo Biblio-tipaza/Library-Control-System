@@ -1,0 +1,375 @@
+/* تنسيقات عامة للخطوط والاتجاهات */
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f6f9;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* الشريط العلوي */
+.main-header {
+    background: linear-gradient(135deg, #102a43, #1f4068); 
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    padding: 15px 120px;
+    border-bottom: 3px solid #27ae60; 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse; 
+    gap: 15px; 
+}
+
+.university-text {
+    display: flex;
+    flex-direction: column;
+    text-align: right; 
+}
+
+.univ-main {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.univ-sub {
+    color: #27ae60; 
+    font-size: 15px;
+    font-weight: 500;
+    margin-top: 2px;
+}
+
+.university-logo {
+    height: 65px;
+    width: auto;
+    background: white;
+    border-radius: 50%; 
+    padding: 2px;
+}
+
+.header-title {
+    color: #ffffff; 
+    font-size: 26px;
+    margin: 0;
+    font-weight: bold;
+}
+
+.page-title-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0 10px 0;
+}
+
+.page-title {
+    background-color: #27ae60; 
+    color: white;
+    padding: 10px 35px;
+    font-size: 20px;
+    border-radius: 50px; 
+    margin: 0;
+    font-weight: bold;
+}
+
+/* شريط القوائم المنسدلة */
+.navbar {
+    display: flex;
+    justify-content: center;
+    background-color: #ffffff;
+    padding: 12px;
+    gap: 25px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    z-index: 10;
+}
+
+.dropbtn {
+    background-color: #1f4068; 
+    color: white;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    border-radius: 6px;
+    min-width: 230px;
+    transition: all 0.3s ease;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none; 
+    position: absolute;
+    background-color: #ffffff;
+    min-width: 230px;
+    box-shadow: 0px 8px 24px rgba(0,0,0,0.15);
+    z-index: 100;
+    border-radius: 6px;
+    margin-top: 5px;
+    right: 0; 
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+}
+
+.dropdown.active .dropdown-content {
+    display: block !important;
+}
+
+.dropdown:hover .dropdown-content {
+    display: none;
+}
+
+.dropdown-content a {
+    color: #334e68;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 13px;
+    border-bottom: 1px solid #f0f4f8;
+    text-align: right;
+}
+
+.dropdown-content a:hover {
+    background-color: #f0f4f8; 
+    color: #27ae60;
+    padding-right: 22px; 
+}
+
+/* مساحة المحتوى والخلفية */
+.content-area {
+    flex: 1; 
+    position: relative;
+    width: 100%;
+    background-image: url('100.png'); 
+    background-size: contain; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    background-color: #154b5f; 
+    min-height: 550px;
+}
+
+.dynamic-form-container {
+    position: relative;
+    margin: 40px auto;
+    padding: 35px;
+    width: 85%;
+    max-width: 780px;
+    background-color: rgba(255, 255, 255, 0.96); 
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    text-align: right;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #1f4068;
+}
+
+.form-group input, 
+.form-group select, 
+.form-group textarea {
+    padding: 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: inherit;
+    background-color: white;
+}
+
+.form-group input:focus, .form-group select:focus {
+    outline: none;
+    border-color: #27ae60;
+    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 20px;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 20px;
+}
+
+.btn {
+    padding: 10px 25px;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-save { background-color: #27ae60; color: white; }
+.btn-print { background-color: #1f4068; color: white; }
+.btn-cancel { background-color: #e2e8f0; color: #475569; }
+
+/* ==================================================== */
+/* هندسة قوالب الوثائق الرسمية للطباعة                  */
+/* ==================================================== */
+.print-only {
+    display: none; 
+}
+
+.official-document {
+    background-color: #ffffff;
+    width: 210mm;
+    height: 297mm;
+    padding: 20mm 18mm;
+    box-sizing: border-box;
+    font-family: "Times New Roman", Times, serif;
+    color: #000000;
+    line-height: 1.8;
+    position: relative;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.doc-header-top {
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.doc-header-top p { margin: 2px 0; }
+
+.doc-meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 30px;
+}
+
+.meta-right-box {
+    width: 42%;
+    text-align: right;
+    font-size: 15px;
+}
+.meta-right-box p { margin: 2px 0; }
+
+.meta-center-box {
+    width: 16%;
+    text-align: center;
+}
+.doc-logo {
+    height: 85px;
+    width: auto;
+}
+
+.meta-left-box {
+    width: 42%;
+    text-align: left;
+    font-size: 14px;
+}
+.meta-left-box p { margin: 2px 0; }
+
+.doc-title {
+    text-align: center;
+    margin: 35px 0;
+}
+.doc-title h2 {
+    display: inline-block;
+    font-size: 22px;
+    font-weight: bold;
+    border-bottom: 2px dashed #000000;
+    padding-bottom: 4px;
+    margin: 0;
+}
+
+.doc-body-text {
+    font-size: 18px;
+    text-align: justify;
+    text-justify: inter-word;
+    margin: 20px 5px;
+    text-indent: 20px;
+}
+
+.fill-data {
+    font-weight: bold;
+    text-decoration: underline;
+    padding: 0 2px;
+}
+
+.font-bold { font-weight: bold; }
+
+/* ======================================================== */
+/* تعديل التموضع والمحاذاة التامة مع خط بداية النص (الخط الأحمر) */
+/* ======================================================== */
+.doc-signature-area-left {
+    margin-top: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end; /* دفع الحاوية لليسار لترك مساحة التوقيع */
+    box-sizing: border-box;
+}
+
+.signature-box-placeholder {
+    width: 70mm; 
+    text-align: right; /* جعل النص يبدأ بدقة محاذاة من اليمين (على خط الحافة الداخلية) */
+    font-size: 18px;
+    padding-right: 5px; /* لمسة بسيطة لضمان ملامسة حافة النص للخط التخيلي للوصل تماماً */
+}
+
+.doc-bottom-bar {
+    position: absolute;
+    bottom: 20mm;
+    left: 18mm;
+    right: 18mm;
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    border-top: 1px solid #000000;
+    padding-top: 8px;
+}
+
+.footer-item {
+    font-weight: bold;
+}
+
+.clickable-link {
+    color: #0000EE;
+    text-decoration: underline;
+}
+
+/* شاشة الطباعة الفعلية */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    .print-only {
+        display: block !important;
+    }
+    body {
+        background-color: #ffffff;
+    }
+    @page {
+        size: A4;
+        margin: 0;
+    }
+}
