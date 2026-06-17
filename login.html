@@ -1,0 +1,21 @@
+<form id="loginForm">
+    <h2>تسجيل الدخول</h2>
+    <input type="text" id="username" placeholder="اسم المستخدم" required>
+    <input type="password" id="password" placeholder="كلمة المرور" required>
+    <button type="submit">دخول</button>
+</form>
+
+<script>
+    document.getElementById("loginForm").onsubmit = function(event) {
+        event.preventDefault(); // منع إرسال النموذج فعلياً
+        
+        var user = document.getElementById("username").value;
+        var pass = document.getElementById("password").value;
+
+        if (user === "admin" && pass === "Azerty@2026") {
+            window.location.href = "index.html"; // اسم الصفحة التي تريد الانتقال لها بعد الدخول
+        } else {
+            alert("اسم المستخدم أو كلمة المرور غير صحيحة!");
+        }
+    };
+</script>
