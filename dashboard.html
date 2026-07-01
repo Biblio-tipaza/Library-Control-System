@@ -5,12 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>المكتبة المركزية - نظام التسيير الإداري</title>
     <link rel="stylesheet" href="style.css">
-    
     <script>
-        // حارس الحماية: يمنع الوصول للصفحة بدون تسجيل دخول
-        if (sessionStorage.getItem("authenticated") !== "true") {
-            window.location.href = "index.html";
-        }
+        if (sessionStorage.getItem("authenticated") !== "true") { window.location.href = "index.html"; }
     </script>
 </head>
 <body>
@@ -20,7 +16,6 @@
             <div style="position: absolute; top: 10px; left: 20px;">
                 <a href="index.html" onclick="sessionStorage.removeItem('authenticated')" style="color: white; text-decoration: none; font-size: 14px;">تسجيل الخروج ⤾</a>
             </div>
-
             <h1 class="header-title">المكتبة المركزية</h1>
             <div class="logo-container">
                 <div class="university-text">
@@ -43,42 +38,14 @@
                     <a href="#" onclick="loadContent('وصل إقرار إيداع نسخة أطروحة الدكتوراه')">وصل إقرار إيداع نسخة أطروحة الدكتوراه</a>
                 </div>
             </div>
-
-            <div class="dropdown">
-                <button class="dropbtn" onclick="toggleDropdown(event)">صفحة الأمانة ▾</button>
-                <div class="dropdown-content">
-                    <a href="#" onclick="loadContent('الكشف الشهري')">الكشف الشهري</a>
-                    <a href="#" onclick="loadContent('المردودية')">المردودية</a>
-                    <a href="#" onclick="loadContent('جدول الإرسال')">جدول الإرسال</a>
-                    <a href="#" onclick="loadContent('التقرير')">التقرير</a>
-                    <a href="#" onclick="loadContent('Bon de commande')">Bon de commande</a>
-                    <a href="#" onclick="loadContent('Bon de retour')">Bon de retour</a>
-                    <a href="#" onclick="loadContent('بريد الدخول')">بريد الدخول</a>
-                    <a href="#" onclick="loadContent('بريد الخروج')">بريد الخروج</a>
-                </div>
-            </div>
-
-            <div class="dropdown">
-                <button class="dropbtn" onclick="toggleDropdown(event)">صفحة المعالجة والتوجيه ▾</button>
-                <div class="dropdown-content">
-                    <a href="https://pmb.cu-tipaza.dz/circ.php" target="_blank">تسجيلات في المكتبة</a>
-                    <a href="http://bi-cu-tipaza.infinityfreeapp.com/manage_students.php" target="_blank">تسجيلات في المكتبة الرقمية</a>
-                    <a href="#" onclick="openSndlLinks(event)">تسجيلات SNDL</a>
-                    <a href="https://quittance.mesrs.dz/home" target="_blank">تبرئة الذمة الإلكترونية</a>
-                    <a href="paper-quittance.html">تبرئة الذمة الورقية</a>
-                    <a href="recommendation.html">التوصية</a>
-                </div>
-            </div>
         </nav>
 
         <main class="content-area">
             <div class="dynamic-form-container" id="form-box" style="display: none;">
                 <h3 id="form-title">اسم الاستمارة</h3>
                 <hr style="border: 0; border-top: 2px solid #27ae60; margin: 15px 0;">
-                
                 <form id="active-form" onsubmit="handleFormSubmit(event)">
                     <div id="form-fields" class="form-grid"></div>
-                    
                     <div class="form-actions">
                         <button type="submit" class="btn btn-save">حفظ المعطيات</button>
                         <button type="button" class="btn btn-print" onclick="printDocument()">طباعة الوصل</button>
@@ -89,7 +56,9 @@
         </main>
     </div>
 
+    <!-- قوالب الطباعة (مخفية عن الشاشة وتظهر عند الطباعة فقط) -->
     <div id="print-templates-container" class="print-only">
+        <!-- قالب الدكتوراه -->
         <div id="tpl-doctorate" class="official-document" style="display:none;">
             <div class="doc-header-top">
                 <p>الجمهورية الجزائرية الديمقراطية الشعبية</p>
@@ -103,12 +72,15 @@
                 <div class="meta-left-box"><p class="font-bold">Université de Tipaza</p><p class="font-bold">La bibliothèque centrale</p></div>
             </div>
             <div class="doc-title"><h2>وصل الإقرار بإيداع نسخة أطروحة الدكتوراه</h2></div>
-            <div class="doc-body-text"><p>نحن مدير المكتبة المركزية لجامعة مرسلي عبد الله تيبازة، نشهد بإيداع أطروحة الدكتوراه المنجزة من طرف الطالب(ة): <span id="out-doc-student" class="fill-data"></span> تحت إشراف السيد(ة): <span id="out-doc-supervisor" class="fill-data"></span> ، شعبة: <span id="out-doc-branch" class="fill-data"></span> ، تخصص: <span id="out-doc-specialty" class="fill-data"></span> ، بعنوان: <span id="out-doc-title" class="fill-data"></span> ، للسنة الجامعية <span id="out-doc-year" class="fill-data"></span> ،تاريخ الايداع <span id="out-doc-submit-date" class="fill-data"></span>.</p></div>
+            <div class="doc-body-text">
+                <p>نحن مدير المكتبة المركزية لجامعة مرسلي عبد الله تيبازة، نشهد بإيداع أطروحة الدكتوراه المنجزة من طرف الطالب(ة): <span id="out-doc-student" class="fill-data"></span> تحت إشراف السيد(ة): <span id="out-doc-supervisor" class="fill-data"></span> ، شعبة: <span id="out-doc-branch" class="fill-data"></span> ، تخصص: <span id="out-doc-specialty" class="fill-data"></span> ، بعنوان: <span id="out-doc-title" class="fill-data"></span> ، للسنة الجامعية <span id="out-doc-year" class="fill-data"></span> ،تاريخ الايداع <span id="out-doc-submit-date" class="fill-data"></span>.</p>
+            </div>
             <div class="doc-signature-area-left"><div class="signature-box-placeholder"><p><b>مدير المكتبة المركزية</b></p></div></div>
-            <div class="doc-bottom-bar"><span class="footer-item">Adresse: Oued Merzoug Tipaza</span><span class="footer-item">Site web: <a href="https://ar.univ-tipaza.dz" target="_blank" class="clickable-link">https://ar.univ-tipaza.dz</a></span><span class="footer-item">Email: <a href="mailto:Cutipaza@yahoo.fr" class="clickable-link">Cutipaza@yahoo.fr</a></span></div>
+            <div class="doc-bottom-bar"><span class="footer-item">Adresse: Oued Merzoug Tipaza</span><span class="footer-item">Site web: https://ar.univ-tipaza.dz</span><span class="footer-item">Email: Cutipaza@yahoo.fr</span></div>
         </div>
 
-        <div id="tpl-publication" class="official-document">
+        <!-- قالب المطبوعة -->
+        <div id="tpl-publication" class="official-document" style="display:none;">
             <div class="doc-header-top">
                 <p>الجمهورية الجزائرية الديمقراطية الشعبية</p>
                 <p dir="ltr" style="font-family: Arial, sans-serif; font-size: 14px; font-weight: bold;">République Algérienne Démocratique et Populaire</p>
@@ -123,80 +95,41 @@
             <div class="doc-title"><h2>وصل الإقرار بإيداع نسخة من المطبوعة</h2></div>
             <div class="doc-body-text">
                 <p>نحن مدير المكتبة المركزية لجامعة مرسلي عبد الله تيبازة، نشهد بإيداع مطبوعة بيداغوجية تحت عنوان: <span id="out-pub-title" class="fill-data"></span> موجهة لطلبة السنة: <span id="out-pub-student-year" class="fill-data"></span> تخصص: <span id="out-pub-specialty" class="fill-data"></span> لكلية: <span id="out-pub-faculty" class="fill-data"></span> للسنة الجامعية: <span id="out-pub-year" class="fill-data"></span>.</p>
-                <p style="margin-top: 20px;">ويمكن الاطلاع على محتوى المطبوعة على الرابط التالي:</p>
-                <p dir="ltr" style="text-align: center; font-size: 14px; font-weight: bold; color: #000; text-decoration: underline; margin: 10px 0;"><a href="#" id="out-pub-link" target="_blank" class="clickable-link"></a></p>
-                <div style="border: 1px solid #000; padding: 10px; margin-top: 20px; text-align: center;">
-                    <p style="margin: 0; font-weight: bold;">أو الدخول صفحة جامعة تيبازة ⬅ المكتبة المركزية ⬅ مطبوعات جامعية.</p>
-                    <p style="margin: 5px 0;">على الرابط التالي: <a href="https://bu.univ-tipaza.dz/" target="_blank">https://bu.univ-tipaza.dz/</a></p>
-                </div>
+                <p dir="ltr" style="text-align: center; font-size: 14px; font-weight: bold; color: #000; margin: 10px 0;"><a href="#" id="out-pub-link" target="_blank" class="clickable-link"></a></p>
             </div>
             <div class="doc-signature-area-left"><div class="signature-box-placeholder"><p><b>مدير المكتبة المركزية</b></p></div></div>
-            <div class="doc-bottom-bar"><span class="footer-item">Adresse: Oued Merzoug Tipaza</span><span class="footer-item">Site web: <a href="https://ar.univ-tipaza.dz" target="_blank" class="clickable-link">https://ar.univ-tipaza.dz</a></span><span class="footer-item">Email: <a href="mailto:Cutipaza@yahoo.fr" class="clickable-link">Cutipaza@yahoo.fr</a></span></div>
+            <div class="doc-bottom-bar"><span class="footer-item">Adresse: Oued Merzoug Tipaza</span><span class="footer-item">Site web: https://ar.univ-tipaza.dz</span><span class="footer-item">Email: Cutipaza@yahoo.fr</span></div>
         </div>
     </div>
 
     <script>
         let currentActiveForm = "";
 
-        function openSndlLinks(event) {
-            event.preventDefault();
-            window.open("https://www.sndl.cerist.dz/user.php?md=5&st=1&ex=1", "_blank");
-            window.open("https://www.appsheet.com/start/e4306e2b-7bf1-48de-b2ef-2a9482796db5?platform=desktop#appName=%D8%AA%D8%B3%D8%AC%D9%8A%D9%84%D8%AATSNDL-%D9%85%D9%83%D8%AA%D8%A8%D8%A9%D8%AA%D9%8A%D8%A8%D8%A7%D8%B2%D8%A9-598055636&vss=H4sIAAAAAAAAA62OvQrCMBRG3-Wbs7hmFQcRXRQX4xCbWwi2SbGpWkIWcfBNxNG3ad_G1B_EtTje73IOx2Ov6TB3MtmCr_z3mlANDi-wqAsS4AJDa9zOZgJMYCbz19hc23N7ae7tqbkNBALCmn0kjkpw38PB_9DBoBUZp1NNu07Y4VH0huO7Q-PwAyIw5JWTm4ye_REMIW6pTaqS1DJG9Y0px2Z0LKRRU6uiN5VZSeEBI7YHwX4BAAA=&view=%D8%A7%D9%84%D9%88%D8%B1%D9%8قرقم1", "_blank");
-        }
-
-        function toggleDropdown(event) {
-            event.stopPropagation();
-            const currentDropdown = event.target.closest('.dropdown');
-            document.querySelectorAll('.dropdown').forEach(drop => { if (drop !== currentDropdown) drop.classList.remove('active'); });
-            currentDropdown.classList.toggle('active');
-        }
-
-        window.onclick = function(event) {
-            if (!event.target.matches('.dropbtn')) {
-                document.querySelectorAll('.dropdown').forEach(drop => drop.classList.remove('active'));
-            }
-        }
-
+        function toggleDropdown(event) { event.stopPropagation(); event.target.closest('.dropdown').classList.toggle('active'); }
+        function closeForm() { document.getElementById('form-box').style.display = 'none'; }
+        
         function generateAcademicYearOptions() {
-            let options = '<option value="">اختر السنة الجامعية...</option>';
-            for (let i = 2025; i <= 2034; i++) { options += `<option value="${i}/${i+1}">${i}/${i+1}</option>`; }
+            let options = '<option value="">اختر السنة...</option>';
+            for (let i = 2025; i <= 2030; i++) { options += `<option value="${i}/${i+1}">${i}/${i+1}</option>`; }
             return options;
-        }
-
-        function syncYearFromDate(dateInputId, outputYearId) {
-            const dateVal = document.getElementById(dateInputId).value;
-            if (dateVal) document.getElementById(outputYearId).innerText = new Date(dateVal).getFullYear();
         }
 
         function loadContent(pageName) {
             currentActiveForm = pageName;
-            const formBox = document.getElementById('form-box');
+            document.getElementById('form-box').style.display = 'block';
+            document.getElementById('form-title').innerText = pageName;
             const fieldsContainer = document.getElementById('form-fields');
-            formBox.style.display = 'block'; document.getElementById('form-title').innerText = pageName; fieldsContainer.innerHTML = '';
-            document.querySelectorAll('.dropdown').forEach(drop => drop.classList.remove('active'));
-            const academicYears = generateAcademicYearOptions();
-
+            
             if (pageName === 'وصل إقرار إيداع نسخة أطروحة الدكتوراه') {
-                fieldsContainer.innerHTML = `<div class="form-group"><label>تيبازة في:</label><input type="date" id="in-doc-date" onchange="syncYearFromDate('in-doc-date', 'out-doc-year-auto')" required></div><div class="form-group"><label>الرقم الإداري:</label><input type="number" id="in-doc-num" required></div><div class="form-group"><label>اسم الطالب(ة):</label><input type="text" id="in-doc-student" required></div><div class="form-group"><label>اسم المشرف:</label><input type="text" id="in-doc-supervisor" required></div><div class="form-group"><label>الشعبة:</label><input type="text" id="in-doc-branch" required></div><div class="form-group"><label>التخصص:</label><input type="text" id="in-doc-specialty" required></div><div class="form-group full-width"><label>عنوان الأطروحة:</label><input type="text" id="in-doc-title" required></div><div class="form-group"><label>السنة الجامعية:</label><select id="in-doc-year" required>${academicYears}</select></div><div class="form-group"><label>تاريخ الإيداع الفعلي:</label><input type="date" id="in-doc-submit-date" required></div>`;
-                document.getElementById('in-doc-date').valueAsDate = new Date();
-                document.getElementById('in-doc-submit-date').valueAsDate = new Date();
-                syncYearFromDate('in-doc-date', 'out-doc-year-auto');
-            } else if (pageName === 'وصل إقرار إيداع نسخة من المطبوعة') {
-                fieldsContainer.innerHTML = `<div class="form-group"><label>تيبازة في:</label><input type="date" id="in-pub-date" onchange="syncYearFromDate('in-pub-date', 'out-pub-year-auto')" required></div><div class="form-group"><label>الرقم الإداري:</label><input type="number" id="in-pub-num" required></div><div class="form-group full-width"><label>عنوان المطبوعة والأستاذ:</label><input type="text" id="in-pub-title" required></div><div class="form-group"><label>موجهة لطلبة سنة:</label><input type="text" id="in-pub-student-year" required></div><div class="form-group"><label>التخصص:</label><input type="text" id="in-pub-specialty" required></div><div class="form-group"><label>الكلية:</label><input type="text" id="in-pub-faculty" required></div><div class="form-group"><label>السنة الجامعية:</label><select id="in-pub-year" required>${academicYears}</select></div><div class="form-group full-width"><label>رابط Google Drive:</label><input type="url" id="in-pub-link" required></div>`;
-                document.getElementById('in-pub-date').valueAsDate = new Date();
-                syncYearFromDate('in-pub-date', 'out-pub-year-auto');
+                fieldsContainer.innerHTML = `<input type="date" id="in-doc-date"> <input type="number" id="in-doc-num" placeholder="الرقم الإداري"> <input type="text" id="in-doc-student" placeholder="اسم الطالب"> <input type="text" id="in-doc-supervisor" placeholder="المشرف"> <input type="text" id="in-doc-branch" placeholder="الشعبة"> <input type="text" id="in-doc-specialty" placeholder="التخصص"> <input type="text" id="in-doc-title" placeholder="عنوان الأطروحة"> <select id="in-doc-year">${generateAcademicYearOptions()}</select> <input type="date" id="in-doc-submit-date">`;
             } else {
-                fieldsContainer.innerHTML = `<div class="form-group full-width"><label>الرقم المرجعي:</label><input type="text"></div><div class="form-group full-width"><label>ملاحظات:</label><textarea rows="4"></textarea></div>`;
+                fieldsContainer.innerHTML = `<input type="date" id="in-pub-date"> <input type="number" id="in-pub-num" placeholder="الرقم الإداري"> <input type="text" id="in-pub-title" placeholder="عنوان المطبوعة"> <input type="text" id="in-pub-student-year" placeholder="سنة الطلبة"> <input type="text" id="in-pub-specialty" placeholder="التخصص"> <input type="text" id="in-pub-faculty" placeholder="الكلية"> <select id="in-pub-year">${generateAcademicYearOptions()}</select> <input type="url" id="in-pub-link" placeholder="رابط المطبوعة">`;
             }
         }
 
-        function formatDateToArabic(dateString) { if(!dateString) return ""; const d = new Date(dateString); return `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}`; }
-
         function printDocument() {
-            document.getElementById('tpl-doctorate').style.display = 'none';
-            document.getElementById('tpl-publication').style.display = 'none';
-            if (currentActiveForm === 'وصل إقرار إيداع نسخة أطروحة الدكتوراه') {
-                document.getElementById('out-doc-date').innerText = formatDateToArabic(document.getElementById('in-doc-date').value);
+            if (currentActiveForm.includes('الدكتوراه')) {
+                document.getElementById('out-doc-date').innerText = document.getElementById('in-doc-date').value;
                 document.getElementById('out-doc-num').innerText = document.getElementById('in-doc-num').value;
                 document.getElementById('out-doc-student').innerText = document.getElementById('in-doc-student').value;
                 document.getElementById('out-doc-supervisor').innerText = document.getElementById('in-doc-supervisor').value;
@@ -204,34 +137,28 @@
                 document.getElementById('out-doc-specialty').innerText = document.getElementById('in-doc-specialty').value;
                 document.getElementById('out-doc-title').innerText = document.getElementById('in-doc-title').value;
                 document.getElementById('out-doc-year').innerText = document.getElementById('in-doc-year').value;
-                document.getElementById('out-doc-submit-date').innerText = formatDateToArabic(document.getElementById('in-doc-submit-date').value);
+                document.getElementById('out-doc-submit-date').innerText = document.getElementById('in-doc-submit-date').value;
                 document.getElementById('tpl-doctorate').style.display = 'block';
-                window.print();
-            } else if (currentActiveForm === 'وصل إقرار إيداع نسخة من المطبوعة') {
-                document.getElementById('out-pub-date').innerText = formatDateToArabic(document.getElementById('in-pub-date').value);
+            } else {
+                document.getElementById('out-pub-date').innerText = document.getElementById('in-pub-date').value;
                 document.getElementById('out-pub-num').innerText = document.getElementById('in-pub-num').value;
                 document.getElementById('out-pub-title').innerText = document.getElementById('in-pub-title').value;
                 document.getElementById('out-pub-student-year').innerText = document.getElementById('in-pub-student-year').value;
                 document.getElementById('out-pub-specialty').innerText = document.getElementById('in-pub-specialty').value;
                 document.getElementById('out-pub-faculty').innerText = document.getElementById('in-pub-faculty').value;
                 document.getElementById('out-pub-year').innerText = document.getElementById('in-pub-year').value;
-                const linkVal = document.getElementById('in-pub-link').value;
-                const outLink = document.getElementById('out-pub-link');
-                outLink.innerText = linkVal; outLink.href = linkVal;
+                const link = document.getElementById('in-pub-link').value;
+                document.getElementById('out-pub-link').innerText = link;
+                document.getElementById('out-pub-link').href = link;
                 document.getElementById('tpl-publication').style.display = 'block';
-                window.print();
-            } else { alert("هذه القائمة مصلحية داخلية، لا تتطلب وثيقة طباعة."); }
+            }
+            window.print();
+            // إعادة الإخفاء بعد الطباعة
+            document.getElementById('tpl-doctorate').style.display = 'none';
+            document.getElementById('tpl-publication').style.display = 'none';
         }
 
-        function closeForm() { document.getElementById('form-box').style.display = 'none'; }
-        function handleFormSubmit(event) { event.preventDefault(); alert("تم حفظ المدخلات بنجاح!"); }
-    </script>
-</body>
-</html>
-
-        function closeForm() { document.getElementById('form-box').style.display = 'none'; }
-        
-        function printDocument() { window.print(); }
+        function handleFormSubmit(event) { event.preventDefault(); alert("تم حفظ البيانات!"); }
     </script>
 </body>
 </html>
