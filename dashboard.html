@@ -276,4 +276,61 @@
             })
             .then(response => response.json())
             .then(data => {
-                if (data.status === "success" && data.results.length > 0
+                if (data.status === "success" && data.results.length > 0) {
+                    const found = data.results[0];
+                    loadContent(found.formType);
+                    
+                    for (let key in found) {
+                        const el = document.getElementById(key);
+                        if (el) el.value = found[key];
+                    }
+                    if (found['in-doc-date']) syncYearFromDate('in-doc-date', 'out-doc-year-auto');
+                    if (found['in-pub-date']) syncYearFromDate('in-pub-date', 'out-pub-year-auto');
+                    
+                    closeSearchModal();
+                    alert("تم استرجاع بيانات الوصل بنجاح! يمكنك التعديل عليها أو طباعتها الآن.");
+                } else {
+                    alert("عذراً، لم يتم العثور على أي وثيقة تطابق بحثك في السحاب.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("حدث خطأ أثناء عملية البحث.");
+            });
+        }
+
+        function printDocument() {
+            document.getElementById('tpl-doctorate').style.display = 'none';
+            document.getElementById('tpl-publication').style.display = 'none';
+            if (currentActiveForm === 'وصل إقرار إيداع نسخة أطروحة الدكتوراه') {
+                document.getElementById('out-doc-date').innerText = formatDateToArabic(document.getElementById('in-doc-date').value);
+                document.getElementById('out-doc-num').innerText = document.getElementById('in-doc-num').value;
+                document.getElementById('out-doc-student').innerText = document.getElementById('in-doc-student').value;
+                document.getElementById('out-doc-supervisor').innerText = document.getElementById('in-doc-supervisor').value;
+                document.getElementById('out-doc-branch').innerText = document.getElementById('in-doc-branch').value;
+                document.getElementById('out-doc-specialty').innerText = document.getElementById('in-doc-specialty').value;
+                document.getElementById('out-doc-title').innerText = document.getElementById('in-doc-title').value;
+                document.getElementById('out-doc-year').innerText = document.getElementById('in-doc-year').value;
+                document.getElementById('out-doc-submit-date').innerText = formatDateToArabic(document.getElementById('in-doc-submit-date').value);
+                document.getElementById('tpl-doctorate').style.display = 'block';
+                window.print();
+            } else if (currentActiveForm === 'وصل إقرار إيداع نسخة من المطبوعة') {
+                document.getElementById('out-pub-date').innerText = formatDateToArabic(document.getElementById('in-pub-date').value);
+                document.getElementById('out-pub-num').innerText = document.getElementById('in-pub-num').value;
+                document.getElementById('out-pub-title').innerText = document.getElementById('in-pub-title').value;
+                document.getElementById('out-pub-student-year').innerText = document.getElementById('in-pub-student-year').value;
+                document.getElementById('out-pub-specialty').innerText = document.getElementById('in-pub-specialty').value;
+                document.getElementById('out-pub-faculty').innerText = document.getElementById('in-pub-faculty').value;
+                document.getElementById('out-pub-year').innerText = document.getElementById('in-pub-year').value;
+                const linkVal = document.getElementById('in-pub-link').value;
+                const outLink = document.getElementById('out-pub-link');
+                outLink.innerText = linkVal; outLink.href = linkVal;
+                document.getElementById('tpl-publication').style.display = 'block';
+                window.print();
+            } else { alert("هذه القائمة مصلحية داخلية، لا تتطلب وثيقة طباعة."); }
+        }
+
+        function closeForm() { document.getElementById('form-box').style.display = 'none'; }
+    </script>
+</body>
+</html>
