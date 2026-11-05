@@ -42,6 +42,7 @@
                     <a href="#" onclick="loadContent('وصل إقرار إيداع نسخة من المطبوعة')">وصل إقرار إيداع نسخة من المطبوعة</a>
                     <a href="#" onclick="loadContent('وصل إقرار إيداع نسخة أطروحة الدكتوراه')">وصل إقرار إيداع نسخة أطروحة الدكتوراه</a>
                     <a href="#" onclick="openSearchModal()">البحث في الأرشيف السحابي 🔍</a>
+                    <a href="#" onclick="openArchiveModal()">عرض السجل السحابي 📊</a>
                 </div>
             </div>
 
@@ -103,6 +104,33 @@
         </div>
     </div>
 
+    <!-- نافذة عرض السجل السحابي الكامل (Google Sheets Table View) -->
+    <div id="archive-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:2000; justify-content:center; align-items:center;">
+        <div style="background:white; padding:25px; border-radius:10px; width:85%; max-height:85vh; overflow-y:auto; text-align:right; box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:2px solid #27ae60; padding-bottom:10px;">
+                <h3 style="margin:0; color:#2c3e50;">📊 السجل السحابي المباشر (Google Sheets)</h3>
+                <button type="button" onclick="closeArchiveModal()" style="background:#e74c3c; color:white; border:none; padding:6px 15px; border-radius:4px; cursor:pointer; font-weight:bold;">إغلاق ✕</button>
+            </div>
+            
+            <div style="overflow-x:auto;">
+                <table style="width:100%; border-collapse:collapse; margin-top:10px; font-size:14px; text-align:center;">
+                    <thead>
+                        <tr style="background-color:#2c3e50; color:white;">
+                            <th style="padding:10px; border:1px solid #ddd;">RecordID</th>
+                            <th style="padding:10px; border:1px solid #ddd;">FormType</th>
+                            <th style="padding:10px; border:1px solid #ddd;">Date</th>
+                            <th style="padding:10px; border:1px solid #ddd;">StudentName</th>
+                            <th style="padding:10px; border:1px solid #ddd;">إجراء</th>
+                        </tr>
+                    </thead>
+                    <tbody id="archive-table-body">
+                        <tr><td colspan="5" style="padding:20px;">جاري تحميل السجلات من السحاب...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
     <div id="print-templates-container" class="print-only">
         <div id="tpl-doctorate" class="official-document" style="display:none;">
             <div class="doc-header-top">
@@ -151,7 +179,7 @@
 
     <script>
         let currentActiveForm = "";
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxJ4S4UvQP2QNOlOPjxviPk2Xms5vyl-ffhbbNphvw7jSmPllnF67600Fq75EIFiPLjvg/exec";
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxgG7p7tZuwVqEn3ZmEysL3Kb8Q0BszyNHlel3FR6s0AhyIzXuOkUZDKTccRZqrvaUVRg/exec";
 
         function openSndlLinks(event) {
             event.preventDefault();
@@ -265,7 +293,6 @@
             document.getElementById('search-modal').style.display = 'none';
         }
 
-        // دالة البحث السحابي واسترجاع البيانات للتعديل والطباعة
         function executeSearch() {
             const query = document.getElementById('modal-search-query').value.trim();
             if (!query) {
@@ -303,6 +330,72 @@
                 console.error("Error:", error);
                 alert("حدث خطأ أثناء عملية البحث.");
             });
+        }
+
+        // دوال عرض السجل السحابي الكامل (Google Sheets Viewer)
+        function openArchiveModal() {
+            document.querySelectorAll('.dropdown').forEach(drop => drop.classList.remove('active'));
+            document.getElementById('archive-modal').style.display = 'flex';
+            loadArchiveTable();
+        }
+
+        function closeArchiveModal() {
+            document.getElementById('archive-modal').style.display = 'none';
+        }
+
+        function loadArchiveTable() {
+            const tbody = document.getElementById('archive-table-body');
+            tbody.innerHTML = '<tr><td colspan="5" style="padding:20px; font-weight:bold;">جاري جلب البيانات من Google Sheets...</td></tr>';
+
+            fetch(WEB_APP_URL, {
+                method: "POST",
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
+                body: JSON.stringify({ action: "getAll" })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success" && data.results && data.results.length > 0) {
+                    tbody.innerHTML = '';
+                    data.results.forEach(row => {
+                        let parsedDate = row.date ? row.date.substring(0, 10) : '';
+                        const tr = document.createElement('tr');
+                        tr.style.borderBottom = '1px solid #eee';
+                        tr.innerHTML = `
+                            <td style="padding:10px; font-weight:bold; color:#2980b9;">${row.recordId}</td>
+                            <td style="padding:10px;">${row.formType}</td>
+                            <td style="padding:10px;">${parsedDate}</td>
+                            <td style="padding:10px; font-weight:bold;">${row.studentName}</td>
+                            <td style="padding:10px;">
+                                <button type="button" onclick="loadRecordFromArchive('${encodeURIComponent(row.fullData)}')" style="background:#27ae60; color:white; border:none; padding:5px 12px; border-radius:4px; cursor:pointer; font-size:12px;">فتح الوصل 📄</button>
+                            </td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="5" style="padding:20px; color:#e74c3c;">لا توجد أي بيانات مسجلة في السحاب حالياً.</td></tr>';
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                tbody.innerHTML = '<tr><td colspan="5" style="padding:20px; color:#e74c3c;">حدث خطأ أثناء جلب جدول البيانات.</td></tr>';
+            });
+        }
+
+        function loadRecordFromArchive(jsonStrDecoded) {
+            try {
+                const found = JSON.parse(decodeURIComponent(jsonStrDecoded));
+                loadContent(found.formType);
+                for (let key in found) {
+                    const el = document.getElementById(key);
+                    if (el) el.value = found[key];
+                }
+                if (found['in-doc-date']) syncYearFromDate('in-doc-date', 'out-doc-year-auto');
+                if (found['in-pub-date']) syncYearFromDate('in-pub-date', 'out-pub-year-auto');
+                
+                closeArchiveModal();
+            } catch(e) {
+                alert("حدث خطأ أثناء قراءة بيانات الوصل.");
+            }
         }
 
         function printDocument() {
