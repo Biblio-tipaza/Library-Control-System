@@ -41,6 +41,7 @@
                 <div class="dropdown-content">
                     <a href="#" onclick="loadContent('وصل إقرار إيداع نسخة من المطبوعة')">وصل إقرار إيداع نسخة من المطبوعة</a>
                     <a href="#" onclick="loadContent('وصل إقرار إيداع نسخة أطروحة الدكتوراه')">وصل إقرار إيداع نسخة أطروحة الدكتوراه</a>
+                    <a href="#" onclick="openSearchModal()">البحث في الأرشيف السحابي 🔍</a>
                 </div>
             </div>
 
@@ -89,6 +90,19 @@
         </main>
     </div>
 
+    <!-- نافذة البحث المنبثقة للأرشيف السحابي -->
+    <div id="search-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:2000; justify-content:center; align-items:center;">
+        <div style="background:white; padding:25px; border-radius:10px; width:450px; text-align:right; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+            <h3 style="margin-top:0; color:#2c3e50;">البحث في أرشيف Google Sheets</h3>
+            <p style="font-size: 14px; color: #555;">أدخل اسم الطالب، العنوان، أو الرقم الإداري:</p>
+            <input type="text" id="modal-search-query" style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc; border-radius:4px; font-size:14px;" placeholder="اكتب كلمة البحث...">
+            <div style="display:flex; justify-content:space-between;">
+                <button type="button" onclick="executeSearch()" style="background:#27ae60; color:white; border:none; padding:8px 20px; border-radius:4px; cursor:pointer; font-weight:bold;">بحث واسترجاع</button>
+                <button type="button" onclick="closeSearchModal()" style="background:#e74c3c; color:white; border:none; padding:8px 20px; border-radius:4px; cursor:pointer;">إغلاق</button>
+            </div>
+        </div>
+    </div>
+
     <div id="print-templates-container" class="print-only">
         <div id="tpl-doctorate" class="official-document" style="display:none;">
             <div class="doc-header-top">
@@ -108,7 +122,7 @@
             <div class="doc-bottom-bar"><span class="footer-item">Adresse: Oued Merzoug Tipaza</span><span class="footer-item">Site web: <a href="https://ar.univ-tipaza.dz" target="_blank" class="clickable-link">https://ar.univ-tipaza.dz</a></span><span class="footer-item">Email: <a href="mailto:Cutipaza@yahoo.fr" class="clickable-link">Cutipaza@yahoo.fr</a></span></div>
         </div>
 
-        <div id="tpl-publication" class="official-document">
+        <div id="tpl-publication" class="official-document" style="display:none;">
             <div class="doc-header-top">
                 <p>الجمهورية الجزائرية الديمقراطية الشعبية</p>
                 <p dir="ltr" style="font-family: Arial, sans-serif; font-size: 14px; font-weight: bold;">République Algérienne Démocratique et Populaire</p>
@@ -137,6 +151,7 @@
 
     <script>
         let currentActiveForm = "";
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxawrn5tVw8RKHgkr6MZsocfOuhLj3CA5yy9mQtlpN8XEOZQfW6t8jOvE33KqLmM5Q/exec";
 
         function openSndlLinks(event) {
             event.preventDefault();
@@ -192,43 +207,73 @@
 
         function formatDateToArabic(dateString) { if(!dateString) return ""; const d = new Date(dateString); return `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}`; }
 
-        function printDocument() {
-            document.getElementById('tpl-doctorate').style.display = 'none';
-            document.getElementById('tpl-publication').style.display = 'none';
-            if (currentActiveForm === 'وصل إقرار إيداع نسخة أطروحة الدكتوراه') {
-                document.getElementById('out-doc-date').innerText = formatDateToArabic(document.getElementById('in-doc-date').value);
-                document.getElementById('out-doc-num').innerText = document.getElementById('in-doc-num').value;
-                document.getElementById('out-doc-student').innerText = document.getElementById('in-doc-student').value;
-                document.getElementById('out-doc-supervisor').innerText = document.getElementById('in-doc-supervisor').value;
-                document.getElementById('out-doc-branch').innerText = document.getElementById('in-doc-branch').value;
-                document.getElementById('out-doc-specialty').innerText = document.getElementById('in-doc-specialty').value;
-                document.getElementById('out-doc-title').innerText = document.getElementById('in-doc-title').value;
-                document.getElementById('out-doc-year').innerText = document.getElementById('in-doc-year').value;
-                document.getElementById('out-doc-submit-date').innerText = formatDateToArabic(document.getElementById('in-doc-submit-date').value);
-                document.getElementById('tpl-doctorate').style.display = 'block';
-                window.print();
-            } else if (currentActiveForm === 'وصل إقرار إيداع نسخة من المطبوعة') {
-                document.getElementById('out-pub-date').innerText = formatDateToArabic(document.getElementById('in-pub-date').value);
-                document.getElementById('out-pub-num').innerText = document.getElementById('in-pub-num').value;
-                document.getElementById('out-pub-title').innerText = document.getElementById('in-pub-title').value;
-                document.getElementById('out-pub-student-year').innerText = document.getElementById('in-pub-student-year').value;
-                document.getElementById('out-pub-specialty').innerText = document.getElementById('in-pub-specialty').value;
-                document.getElementById('out-pub-faculty').innerText = document.getElementById('in-pub-faculty').value;
-                document.getElementById('out-pub-year').innerText = document.getElementById('in-pub-year').value;
-                const linkVal = document.getElementById('in-pub-link').value;
-                const outLink = document.getElementById('out-pub-link');
-                outLink.innerText = linkVal; outLink.href = linkVal;
-                document.getElementById('tpl-publication').style.display = 'block';
-                window.print();
-            } else { alert("هذه القائمة مصلحية داخلية، لا تتطلب وثيقة طباعة."); }
+        // دالة الحفظ السحابي (Google Sheets)
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            if (!currentActiveForm.includes('وصل')) {
+                alert("تم حفظ المدخلات بنجاح!");
+                return;
+            }
+
+            const inputs = document.querySelectorAll('#form-fields input, #form-fields select');
+            let fullData = { formType: currentActiveForm };
+            inputs.forEach(i => { if(i.id) fullData[i.id] = i.value; });
+            
+            const docId = fullData['in-doc-num'] || fullData['in-pub-num'] || Date.now();
+            const studentOrTitle = fullData['in-doc-student'] || fullData['in-pub-title'] || 'بدون عنوان';
+            const docDate = fullData['in-doc-date'] || fullData['in-pub-date'] || '';
+
+            const payload = {
+                action: "save",
+                recordId: docId,
+                formType: currentActiveForm,
+                date: docDate,
+                studentName: studentOrTitle,
+                fullData: fullData
+            };
+
+            alert("جاري الحفظ في السحاب... يرجى الانتظار.");
+
+            fetch(WEB_APP_URL, {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            }).then(() => {
+                alert("تم حفظ المعطيات في جدول Google Sheets بنجاح!");
+            }).catch(error => {
+                console.error("Error:", error);
+                alert("حدث خطأ أثناء الاتصال بالسحاب.");
+            });
         }
 
-        function closeForm() { document.getElementById('form-box').style.display = 'none'; }
-        function handleFormSubmit(event) { event.preventDefault(); alert("تم حفظ المدخلات بنجاح!"); }
-    </script>
-</body>
-</html>
+        // دوال نافذة البحث المنبثقة
+        function openSearchModal() {
+            document.querySelectorAll('.dropdown').forEach(drop => drop.classList.remove('active'));
+            document.getElementById('search-modal').style.display = 'flex';
+            document.getElementById('modal-search-query').value = '';
+            document.getElementById('modal-search-query').focus();
+        }
 
-    </script>
-</body>
-</html>
+        function closeSearchModal() {
+            document.getElementById('search-modal').style.display = 'none';
+        }
+
+        // دالة البحث السحابي واسترجاع البيانات للتعديل والطباعة
+        function executeSearch() {
+            const query = document.getElementById('modal-search-query').value.trim();
+            if (!query) {
+                alert("الرجاء إدخال اسم أو عنوان أو رقم للبحث.");
+                return;
+            }
+
+            alert("جاري البحث في الأرشيف السحابي...");
+
+            fetch(WEB_APP_URL, {
+                method: "POST",
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
+                body: JSON.stringify({ action: "search", query: query })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success" && data.results.length > 0
